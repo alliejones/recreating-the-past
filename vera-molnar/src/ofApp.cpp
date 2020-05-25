@@ -2,12 +2,23 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    mouseIsPressed = false;
+    gui.setup();
+    
+    gui.add(squareOneJitter.set("squareOneJitter", 15, 0, 50));
+    gui.add(squareOneMargin.set("squareOneMargin", 10, 0, 50));
+    gui.add(squareOneWidth.set("squareOneWidth", 72, 0, 100));
+    gui.add(squareOneDropoff.set("squareOneDropoff", 0.85, 0.0, 1.0));
+    
+    gui.add(squareTwoJitter.set("squareTwoJitter", 10, 0, 50));
+    gui.add(squareTwoMargin.set("squareTwoMargin", 33, 0, 50));
+    gui.add(squareTwoWidth.set("squareTwoWidth", 34, 0, 100));
+    gui.add(squareTwoDropoff.set("squareTwoDropoff", 0.85, 0.0, 1.0));
+    
+    showGUI = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
 }
 
 //--------------------------------------------------------------
@@ -19,6 +30,7 @@ void ofApp::draw(){
     ofNoFill();
     ofSetLineWidth(3);
 
+
     for (int i = 0; i < 12; i++) {
         for (int j = 0; j < 12; j++) {
             ofPushMatrix();
@@ -26,16 +38,20 @@ void ofApp::draw(){
             int yOffset = 50 + (j*100);
             ofTranslate(xOffset, yOffset);
             
-            if (ofRandom(1) < 0.85) {
-                randomQuad(72, 15, 10);
+            if (ofRandom(1) < squareOneDropoff) {
+                randomQuad(squareOneWidth, squareOneJitter, squareOneMargin);
             }
             
-            if (ofRandom(1) < 0.85) {
-                randomQuad(34, 10, 33);
+            if (ofRandom(1) < squareTwoDropoff) {
+                randomQuad(squareTwoWidth, squareTwoJitter, squareTwoMargin);
             }
 
             ofPopMatrix();
         }
+    }
+    
+    if (showGUI) {
+        gui.draw();
     }
 }
 
@@ -65,7 +81,10 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    int SPACE_KEY = 32;
+    if (key == SPACE_KEY) {
+        showGUI = !showGUI;
+    }
 }
 
 //--------------------------------------------------------------
@@ -80,12 +99,12 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    mouseIsPressed = true;
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    mouseIsPressed = false;
+    
 }
 
 //--------------------------------------------------------------

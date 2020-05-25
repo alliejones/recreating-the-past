@@ -9,5 +9,8 @@ ifndef OF_ROOT
 	OF_ROOT=$(realpath ../../..)
 endif
 
+# silence warnings
+CXXFLAGS += -w
+
 # call the project makefile!
 include $(OF_ROOT)/libs/openFrameworksCompiled/project/makefileCommon/compile.project.mk
