@@ -2,15 +2,12 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"path": "${workspaceFolder}/../../../../libs"
-		},
-		{
-			"path": "${workspaceFolder}/../../../../addons"
 		}
 	],
 	"settings": {
-		"C_Cpp.intelliSenseEngine": "Tag Parser"
+		"C_Cpp.loggingLevel": "Debug",
+		"files.associations": {
+			"limits": "cpp"
+		}
 	}
 }

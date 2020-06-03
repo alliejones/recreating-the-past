@@ -13,7 +13,7 @@ void ofApp::setup(){
     gui.add(squareTwoMargin.set("squareTwoMargin", 33, 0, 50));
     gui.add(squareTwoWidth.set("squareTwoWidth", 34, 0, 100));
     gui.add(squareTwoDropoff.set("squareTwoDropoff", 0.85, 0.0, 1.0));
-    
+
     showGUI = true;
 }
 

@@ -24,11 +24,11 @@ class ofApp : public ofBaseApp{
 
     ofxPanel gui;
 
-    ofParameter<int> squareOneJitter;
     ofParameter<int> squareOneMargin;
     ofParameter<int> squareOneWidth;
     ofParameter<float> squareOneDropoff;
 
+    ofParameter<int> squareOneJitter;
     ofParameter<int> squareTwoJitter;
     ofParameter<int> squareTwoMargin;
     ofParameter<int> squareTwoWidth;

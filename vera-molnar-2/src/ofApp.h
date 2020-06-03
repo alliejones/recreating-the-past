@@ -29,4 +29,9 @@ class ofApp : public ofBaseApp{
 		ofxPanel gui;
 
 		ofParameter<int> lineOffset;
+
+		ofFbo lineFill(int space);
+
+		ofFbo fill1;
+		ofFbo fill2;
 };
