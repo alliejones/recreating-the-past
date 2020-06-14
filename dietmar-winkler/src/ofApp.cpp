@@ -6,6 +6,10 @@ void ofApp::setup() {
   blue = ofColor(0, 108, 185);
   cyan = ofColor(0, 163, 218);
 
+  maxMouseOffset = 15.;
+  currentMouseXOffset = 0;
+  currentMouseYOffset = 0;
+
   circleRadius = 75.;
 
   letterPath.setCircleResolution(100);
@@ -20,10 +24,10 @@ void ofApp::setup() {
   }
 
   ofRectangle letterPathBounds = ofApp::getBoundingBoxOfPath(letterPath);
-  letterPathFbo.allocate(letterPathBounds.getWidth(),
-                         letterPathBounds.getHeight());
-  letterPathMaskFbo.allocate(letterPathBounds.getWidth(),
-                             letterPathBounds.getHeight());
+  letterPathFbo.allocate(letterPathBounds.getWidth() + maxMouseOffset * 2,
+                         letterPathBounds.getHeight() + maxMouseOffset * 2);
+  letterPathMaskFbo.allocate(letterPathBounds.getWidth() + maxMouseOffset * 2,
+                             letterPathBounds.getHeight() + maxMouseOffset * 2);
 
   letterPathFbo.begin();
   ofClear(0, 0, 0);
@@ -32,30 +36,44 @@ void ofApp::setup() {
   letterPath.setColor(cyan);
   letterPath.draw();
   letterPathFbo.end();
-
-  letterPathMaskFbo.begin();
-  ofClear(0, 0, 0);
-  // y translation needs to accomodate ascenders
-  letterPathNoL.draw(circleRadius * (5. / 3), circleRadius * (4. / 3));
-  letterPathMaskFbo.end();
-
-  letterPathFbo.getTexture().setAlphaMask(letterPathMaskFbo.getTexture());
 }
 
 //--------------------------------------------------------------
-void ofApp::update() {}
+void ofApp::update() {
+  currentMouseXOffset =
+      ofMap(mouseX, 0, ofGetWindowWidth(), -maxMouseOffset, maxMouseOffset);
+  currentMouseYOffset =
+      ofMap(mouseY, 0, ofGetWindowHeight(), -maxMouseOffset, maxMouseOffset);
+}
 
 //--------------------------------------------------------------
 void ofApp::draw() {
   ofBackground(60, 49, 72);
 
+  ofTranslate(100, 100);
+
   letterPathNoL.setColor(red);
   letterPathNoL.draw(circleRadius * 8. / 3, circleRadius * 2);
 
   letterPath.setColor(blue);
-  letterPath.draw(circleRadius * 2, circleRadius * 2);
+  letterPath.draw(circleRadius * 2 + currentMouseXOffset,
+                  circleRadius * 2 + currentMouseYOffset);
 
-  letterPathFbo.draw(circleRadius, circleRadius * 2. / 3);
+  updateMask(currentMouseXOffset, currentMouseYOffset);
+  letterPathFbo.draw(circleRadius + currentMouseXOffset,
+                     circleRadius * 2. / 3 + currentMouseYOffset);
+}
+
+void ofApp::updateMask(float offsetX, float offsetY) {
+  letterPathMaskFbo.begin();
+  ofClear(255, 0, 0);
+  letterPathNoL.setColor(255);
+  // y translation needs to accomodate ascenders
+  letterPathNoL.draw(circleRadius * (5. / 3) - currentMouseXOffset,
+                     circleRadius * (4. / 3) - currentMouseYOffset);
+  letterPathMaskFbo.end();
+
+  letterPathFbo.getTexture().setAlphaMask(letterPathMaskFbo.getTexture());
 }
 
 vector<ofPath> ofApp::genLetterPaths(float circleRad) {

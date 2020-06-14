@@ -24,12 +24,17 @@ public:
 
   vector<ofPath> genLetterPaths(float circleRad);
   void drawLetters(ofColor fill, bool includeL = true);
+  void updateMask(float offsetX, float offsetY);
 
   ofRectangle getBoundingBoxOfPath(ofPath &path);
 
   ofColor red;
   ofColor blue;
   ofColor cyan;
+
+  float maxMouseOffset;
+  float currentMouseXOffset;
+  float currentMouseYOffset;
 
   float circleRadius;
   ofPath letterPath;
